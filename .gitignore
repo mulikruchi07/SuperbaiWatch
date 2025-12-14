@@ -1,16 +1,94 @@
-*.iml
-.gradle
-docsx
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+
+# OS / SYSTEM
+
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+Thumbs.db
+desktop.ini
+
+
+# IDEs
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+.idea/*
+
+# VS Code (keep commented if you want settings tracked)
+.vscode/
+!.vscode/extensions.json
+
+
+# ANDROID / WEAR OS (Native)
+
+.gradle/
+build/
+**/build/
 local.properties
+.externalNativeBuild/
+.cxx/
+captures/
+
+# Android profiling / outputs
+**/app/debug/
+**/app/profile/
+**/app/release/
+
+
+# GRADLE
+
+.gradle/
+gradle-app.setting
+
+
+# FLUTTER / DART (SUPERBAI APP)
+
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+coverage/
+build/
+**/build/
+
+# Flutter iOS generated
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/ephemeral/
+
+# Flutter Android generated
+**/android/.gradle/
+**/android/app/build/
+**/android/local.properties
+
+
+# SYMBOLS / OBFUSCATION
+
+app.*.symbols
+app.*.map.json
+
+
+# LOGS / TEMP FILES
+
+*.log
+*.swp
+*.class
+*.pyc
+.history
+.svn/
+
+
+# PACKAGE MANAGERS / CACHE
+
+.atom/
+.swiftpm/
+.build/
+.buildlog/
+migrate_working_dir/
+
+
+# DOCUMENTATION OUTPUT
+
+docsx/
+**/doc/api/
