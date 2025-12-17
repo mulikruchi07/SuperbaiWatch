@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Splash theme -->
+    <style name="Theme.SuperbaiWatch.Splash" parent="Theme.SplashScreen">
+        <!-- Background color -->
+        <item name="windowSplashScreenBackground">#FFFFFF</item>
+
+        <!-- Splash logo -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_superbai_logo</item>
+
+        <!-- Icon background (important for round watches) -->
+        <item name="windowSplashScreenIconBackgroundColor">#FFFFFF</item>
+
+        <!-- App theme after splash -->
+        <item name="postSplashScreenTheme">
+            @style/Theme.SuperbaiWatch
+        </item>
+    </style>
+
+    <!-- Main app theme -->
+    <style name="Theme.SuperbaiWatch" parent="Theme.DeviceDefault">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+</resources>
