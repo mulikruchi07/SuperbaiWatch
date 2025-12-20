@@ -42,7 +42,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
-    useLibrary("com.google.android.wearable")
+    useLibrary("com.google.android.wear")
 }
 
 dependencies {
