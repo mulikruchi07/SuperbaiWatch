@@ -42,11 +42,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
+    useLibrary("com.google.android.wearable")
 }
 
 dependencies {
     implementation("androidx.wear.compose:compose-material:1.3.0")
     implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.wear:wear:1.2.0")
     implementation(libs.play.services.wearable)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
