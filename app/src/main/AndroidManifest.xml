@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
     <uses-library
-            android:name="com.google.android.wear"
+            android:name="com.google.android.wearable"
             android:required="true" />
         <uses-library
             android:name="wear-sdk"
