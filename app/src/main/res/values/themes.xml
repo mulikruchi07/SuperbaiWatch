@@ -10,7 +10,7 @@
     </style>
 
     <!-- Main Wear OS App Theme -->
-    <style name="Theme.SuperbaiWatch" parent="Theme.Wear.Material">
+    <style name="Theme.SuperbaiWatch" parent="android:Theme.DeviceDefault">
         <!-- Keep minimal, Compose controls UI -->
         <item name="android:windowBackground">@android:color/black</item>
     </style>
