@@ -15,7 +15,11 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
+        
+        // Keep the splash screen visible for 2 seconds
+        splashScreen.setKeepOnScreenCondition { false }
+        
     super.onCreate(savedInstanceState)
 
     setContent {

@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Splash Screen Theme -->
+    <!-- Splash Screen Theme - Full Icon Coverage -->
     <style name="Theme.SuperbaiWatch.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#000000</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_superbai_logo</item>
+        <item name="windowSplashScreenAnimationDuration">2500</item>
         <item name="windowSplashScreenIconBackgroundColor">#000000</item>
+        <item name="windowSplashScreenBrandingImage">@drawable/ic_superbai_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.SuperbaiWatch</item>
+        <!-- Fullscreen attributes -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionBar">false</item>
     </style>
 
     <!-- Main Wear OS App Theme -->
@@ -16,3 +22,4 @@
     </style>
 
 </resources>
+
