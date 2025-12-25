@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:wear/wear.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -124,5 +123,19 @@ class WearSyncService {
   static void initialize() {
     listenForWatchRequests();
     _fetchAndSyncBookings(); // Initial sync
+  }
+}
+
+// Minimal no-op DataLayer shim so Flutter build succeeds on mobile.
+// Replace with a real implementation (e.g., method channel to Android Wear Data Layer)
+// when you are ready to send data to the watch from Flutter.
+class WearDataLayer {
+  static Future<void> sendData(String path, Map<String, String> data) async {
+    // TODO: implement platform channel to send data to Wear OS
+  }
+
+  static Stream<String> listenForMessages(String path) {
+    // TODO: implement platform channel listener for watch messages
+    return const Stream.empty();
   }
 }

@@ -22,7 +22,6 @@ dependencies:
   firebase_auth: ^5.6.2
   intl: ^0.20.2
   cloud_firestore: ^5.6.12
-  wear: ^1.1.0  # For communicating with Wear OS watch
 
 dev_dependencies:
   flutter_test:
