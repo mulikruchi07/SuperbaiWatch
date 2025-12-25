@@ -48,6 +48,10 @@ dependencies {
     implementation ("androidx.core:core-ktx:1.13.1")
     // Wear OS Compose
     implementation ("androidx.wear.compose:compose-foundation:1.3.1")
+    // Wear OS Data Layer for phone-watch communication
+    implementation ("com.google.android.gms:play-services-wearable:18.1.0")
+    // Gson for JSON parsing
+    implementation ("com.google.code.gson:gson:2.10.1")
     // Splash screen
     implementation ("androidx.core:core-splashscreen:1.0.1")
     // Lifecycle
