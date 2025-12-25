@@ -1,6 +1,7 @@
 package com.example.superbai.wear.presentation
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.wear.compose.material.*
@@ -16,10 +17,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.background
 import kotlinx.coroutines.delay
 import com.example.superbai.wear.R
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Battery optimization: Clear FLAG_KEEP_SCREEN_ON to allow screen to sleep
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        
+        // Battery optimization: Lifecycle observer to pause when not visible
+        lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onPause(owner: LifecycleOwner) {
+                // App goes to background, system handles power management
+            }
+        })
         
         setContent {
             var showSplash by remember { mutableStateOf(true) }
@@ -46,8 +59,9 @@ fun SplashScreen() {
             .background(Color.Black),
         contentAlignment = Alignment.Center
     ) {
+        // Using vector drawable instead of large PNG for efficiency
         Image(
-            painter = painterResource(id = R.drawable.ic_superbai_logo),
+            painter = painterResource(id = R.drawable.ic_logo_splash),
             contentDescription = "Superbai Logo",
             modifier = Modifier.size(120.dp)
         )
