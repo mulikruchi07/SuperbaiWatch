@@ -11,6 +11,7 @@ import 'dart:ui'; // Required for BackdropFilter
 import 'package:superbai/maid_linking_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:superbai/wear_sync_service.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({super.key});
@@ -292,6 +293,7 @@ class _BookingScreenState extends State<BookingScreen>
         _instantBookings = instant;
         _previousBookings = previous;
       });
+      WearSyncService.syncBookingsToWatch(active);
     }
   }
 
