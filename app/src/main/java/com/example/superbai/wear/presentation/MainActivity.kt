@@ -11,20 +11,46 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.*
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.background
+import kotlinx.coroutines.delay
+import com.example.superbai.wear.R
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
+        super.onCreate(savedInstanceState)
         
-        // Keep the splash screen visible for 2 seconds
-        splashScreen.setKeepOnScreenCondition { false }
-        
-    super.onCreate(savedInstanceState)
-
-    setContent {
-        SuperbaiWatchApp()
+        setContent {
+            var showSplash by remember { mutableStateOf(true) }
+            
+            LaunchedEffect(Unit) {
+                delay(2500)
+                showSplash = false
+            }
+            
+            if (showSplash) {
+                SplashScreen()
+            } else {
+                SuperbaiWatchApp()
+            }
+        }
     }
+}
+
+@Composable
+fun SplashScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_superbai_logo),
+            contentDescription = "Superbai Logo",
+            modifier = Modifier.size(120.dp)
+        )
     }
 }
 

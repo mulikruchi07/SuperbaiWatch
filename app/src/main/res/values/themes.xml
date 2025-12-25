@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Splash Screen Theme - Full Icon Coverage -->
-    <style name="Theme.SuperbaiWatch.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#000000</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_superbai_logo</item>
-        <item name="windowSplashScreenAnimationDuration">2500</item>
-        <item name="windowSplashScreenIconBackgroundColor">#000000</item>
-        <item name="windowSplashScreenBrandingImage">@drawable/ic_superbai_logo</item>
-        <item name="postSplashScreenTheme">@style/Theme.SuperbaiWatch</item>
-        <!-- Fullscreen attributes -->
+    <!-- Splash Screen Theme -->
+    <style name="Theme.SuperbaiWatch.Splash" parent="android:Theme.DeviceDefault">
+        <item name="android:windowBackground">@android:color/black</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowActionBar">false</item>
