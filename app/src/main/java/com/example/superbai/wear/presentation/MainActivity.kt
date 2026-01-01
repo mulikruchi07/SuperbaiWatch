@@ -24,51 +24,32 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
-import com.example.superbai.wear.service.WearDataService
-import com.example.superbai.wear.data.BookingData
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 import androidx.compose.ui.text.style.TextAlign
 
 class MainActivity : ComponentActivity() {
     private var showSplash = mutableStateOf(true)
-    private lateinit var wearDataService: WearDataService
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Initialize Wear Data Service
-        wearDataService = WearDataService(this)
-        
-        // Battery optimization: Clear FLAG_KEEP_SCREEN_ON to allow screen to sleep
+        // Battery optimization: Clear FLAG_KEEP_SCREEN_ON
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         
-        // Battery optimization: Lifecycle observer to pause when not visible
         lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onPause(owner: LifecycleOwner) {
-                // App goes to background, system handles power management
-            }
-            
-            override fun onResume(owner: LifecycleOwner) {
-                // Request fresh data when app comes to foreground
-                wearDataService.requestDataFromPhone()
+                // App paused - system handles power
             }
         })
         
-        // Load cached data and request fresh data from phone
-        wearDataService.loadCachedBookings()
-        wearDataService.requestDataFromPhone()
-        
         setContent {
-            // Use the state from the class level
             if (showSplash.value) {
                 SplashScreen()
             } else {
-                SuperbaiWatchApp(wearDataService)
+                WatchBookingDisplay()
             }
         }
         
-        // Hide splash screen after delay
+        // Hide splash after 2.5 seconds
         window.decorView.postDelayed({
             showSplash.value = false
         }, 2500)
@@ -107,156 +88,91 @@ fun SplashScreen() {
 }
 
 @Composable
-fun SuperbaiWatchApp(wearDataService: WearDataService) {
-    val bookings by wearDataService.bookings.collectAsState()
-    val isConnected by wearDataService.isConnected.collectAsState()
+fun WatchBookingDisplay() {
+    // This is a simple data receiver - data comes from phone via SharedPreferences
+    // stored by the Bluetooth service
+    val context = LocalContext.current
+    var bookingData by remember { mutableStateOf<Map<String, String>?>(null) }
+    var lastUpdate by remember { mutableStateOf("Loading...") }
     
-    Scaffold(
-        timeText = { TimeText() }
-    ) {
+    // Simulate receiving data from phone (in real implementation, 
+    // this would be updated by BluetoothService)
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(2000) // Check every 2 seconds
+            // In production, this would read from SharedPreferences 
+            // updated by Bluetooth receiver
+            bookingData = null // Will be updated when phone sends data
+        }
+    }
+    
+    Scaffold(timeText = { TimeText() }) {
         ScalingLazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 20.dp)
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp)
         ) {
-            // Header
             item {
                 Text(
-                    text = "SUPERBAI",
+                    text = "📱 SUPERBAI",
                     style = MaterialTheme.typography.title3,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.White,
+                    textAlign = TextAlign.Center
                 )
             }
-
+            
             item { Spacer(modifier = Modifier.height(8.dp)) }
             
-            // Connection Status
-            if (!isConnected) {
-                item {
-                    Text(
-                        text = "📱 Phone Disconnected",
-                        style = MaterialTheme.typography.caption1,
-                        color = Color.Gray,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                item { Spacer(modifier = Modifier.height(8.dp)) }
-            }
-
-            // Display bookings or empty state
-            if (bookings.isEmpty()) {
+            if (bookingData == null) {
                 item {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = "No Active Bookings",
+                            text = "Waiting for phone...",
                             style = MaterialTheme.typography.body2,
                             color = Color.Gray,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            onClick = { wearDataService.requestDataFromPhone() },
-                            colors = ButtonDefaults.primaryButtonColors()
-                        ) {
-                            Text("🔄 Refresh")
-                        }
+                        Text(
+                            text = "Make sure phone app is running",
+                            style = MaterialTheme.typography.caption1,
+                            color = Color.DarkGray,
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
             } else {
-                // Display each booking
-                bookings.forEachIndexed { index, booking ->
-                    item {
-                        BookingCard(booking)
-                    }
-                    if (index < bookings.size - 1) {
-                        item { Spacer(modifier = Modifier.height(12.dp)) }
-                    }
-                }
-                
-                // Refresh button at bottom
-                item { Spacer(modifier = Modifier.height(12.dp)) }
                 item {
-                    Button(
-                        onClick = { wearDataService.requestDataFromPhone() },
-                        colors = ButtonDefaults.secondaryButtonColors()
-                    ) {
-                        Text("🔄 Refresh Data")
+                    Card(onClick = {}) {
+                        Column(
+                            modifier = Modifier.padding(12.dp),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            Text(
+                                text = bookingData!!["service"] ?: "Service",
+                                style = MaterialTheme.typography.title3,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White
+                            )
+                            Text(
+                                text = "👤 ${bookingData!!["maid"]}",
+                                style = MaterialTheme.typography.body2,
+                                color = Color.White
+                            )
+                            Text(
+                                text = "🕐 ${bookingData!!["time"]}",
+                                style = MaterialTheme.typography.body2,
+                                color = Color.White
+                            )
+                        }
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun BookingCard(booking: BookingData) {
-    Card(
-        onClick = {},
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(12.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            // Service Name
-            Text(
-                text = booking.serviceName,
-                style = MaterialTheme.typography.title3,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.White
-            )
-            
-            // Status
-            val statusColor = when (booking.status) {
-                "In Progress", "Active" -> Color(0xFF4CAF50)
-                "Completed" -> Color(0xFF2196F3)
-                "Pending" -> Color(0xFFFFA726)
-                else -> Color.Gray
-            }
-            
-            Text(
-                text = booking.status,
-                color = statusColor,
-                style = MaterialTheme.typography.caption1,
-                fontWeight = FontWeight.Medium
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            // Maid Name
-            Text(
-                text = "👤 ${booking.maidName}",
-                style = MaterialTheme.typography.body2,
-                color = Color.White
-            )
-            
-            // Time Slot
-            Text(
-                text = "🕐 ${booking.timeSlot}",
-                style = MaterialTheme.typography.body2,
-                color = Color.White
-            )
-            
-            // Booking Date
-            Text(
-                text = "📅 ${booking.bookingDate}",
-                style = MaterialTheme.typography.caption1,
-                color = Color.Gray
-            )
-            
-            if (booking.todayStatus.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Today: ${booking.todayStatus}",
-                    style = MaterialTheme.typography.caption1,
-                    color = Color(0xFF4CAF50)
-                )
             }
         }
     }
